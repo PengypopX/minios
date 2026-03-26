@@ -6,7 +6,7 @@ class State(Enum):
     NEW        = "NEW"
     READY      = "READY"
     RUNNING    = "RUNNING"
-    BLOCKEDz    = "BLOCKED"
+    BLOCKED    = "BLOCKED"
     TERMINATED = "TERMINATED"
 
 class PCB:
