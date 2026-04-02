@@ -72,3 +72,11 @@ class Scheduler:
         shortest = min(self.ready_queue, key=lambda p: p.burst_time)
         self.ready_queue.remove(shortest)
         return shortest
+    
+    def _io_sjf(self, blocked_queue):
+        if not blocked_queue:
+            return None
+        shortest_io = min(blocked_queue,key= lambda p: p.io_request_size)
+        blocked_queue.remove(shortest_io)
+        return shortest_io
+    

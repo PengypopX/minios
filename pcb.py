@@ -10,7 +10,7 @@ class State(Enum):
     TERMINATED = "TERMINATED"
 
 class PCB:
-    def __init__(self, pid, arrival_time, burst_time, memory_required, priority=0):
+    def __init__(self, pid, arrival_time, burst_time, memory_required, priority=0, ):
         # --- Identity ---
         self.pid              = pid             # Unique integer ID
         self.priority         = priority        # Used if you pick Priority scheduling
@@ -31,6 +31,8 @@ class PCB:
 
         # --- Resource tracking ---
         self.waiting_for      = None            # Name of the resource it's blocked on, if any
+        self.open_files = []
+        self.io_request_size = 0
 
     # --- Computed stats (useful for your logs at the end) ---
     @property
@@ -49,3 +51,13 @@ class PCB:
     def __repr__(self):
         return (f"PCB(pid={self.pid}, state={self.state.value}, "
                 f"remaining={self.remaining_time}, mem={self.memory_required})")
+    
+    def add_file(self, file_name):
+        if file_name not in self.open_files:
+            self.open_files.append(file_name)
+    
+    def request_io(self, size):
+        self.io_request_size = size
+        self.state = State.BLOCKED
+        self.waiting_for = "I/O"
+        
