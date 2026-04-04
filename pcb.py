@@ -33,6 +33,8 @@ class PCB:
         self.waiting_for      = None            # Name of the resource it's blocked on, if any
         self.open_files = []
         self.io_request_size = 0
+        self.needs_resource = None   # tuple of (resource_name, tick_to_request) or None
+        self.resource_acquired = False
 
     # --- Computed stats (useful for your logs at the end) ---
     @property

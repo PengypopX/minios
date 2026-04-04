@@ -51,5 +51,25 @@ def run(scheduler, memory_manager, resource_manager, logger, jobs):
             elif result == "preempted":
                 current_process = None
 
-        # 4. advance time
+        # 4. Tick the current process
+        if current_process:
+            result = scheduler.tick(current_process, logger, current_time)
+
+            if result == "terminated":
+                memory_manager.release(current_process)
+                logger.memory_released(current_time, current_process)
+                # Release any held resource
+                if getattr(current_process, 'resource_acquired', False):
+                    nr = getattr(current_process, 'needs_resource', None)
+                    if nr:
+                        next_pcb = resource_manager.release(
+                            current_process, nr[0], logger, current_time
+                        )
+                        if next_pcb:
+                            scheduler.add_process(next_pcb)
+                current_process = None
+
+            elif result == "preempted":
+                current_process = None
+
         current_time += 1
