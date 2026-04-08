@@ -10,7 +10,7 @@ class DiskManager:
         self.initialize_disk()
 
     def initialize_disk(self):
-        if not in os.path.exists(self.disk_file):
+        if not os.path.exists(self.disk_file):
             with open(self.disk_file, 'w', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow(["block_id", "data", "next_block"])
@@ -28,7 +28,7 @@ class DiskManager:
             writer = csv.writer(f)
             writer.writerows(rows)
     #scans entire disk for blocks that aren't being used
-   def find_free_blocks(self, needed):
+    def find_free_blocks(self, needed):
         rows = self._get_all_rows()
         free_indices = []
         # Skip header at index 0
@@ -39,7 +39,7 @@ class DiskManager:
                 return free_indices
         return []
     #simulates OS file writing 
-    def write_file(self, pcb, filename, content)
+    def write_file(self, pcb, filename, content):
         
         # Calculate how many blocks this content needs
         blocks_needed = math.ceil(len(content) / self.block_size)

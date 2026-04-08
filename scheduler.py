@@ -19,6 +19,8 @@ class Scheduler:
     def select_next(self):
         if not self.ready_queue:
             return None   # nothing to run
+        
+        self.time_on_cpu = 0 # reset CPU time counter when selecting a new process
 
         if self.policy == "FCFS":
             return self._fcfs()

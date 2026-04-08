@@ -1,15 +1,17 @@
 # main.py
-
+import os
 import argparse
 from logger import Logger
 from memory_manager import MemoryManager
 from resource_manager import ResourceManager
 from scheduler import Scheduler
-from simulation import run
+from simulation import Simulation
 from config import TOTAL_MEMORY, DEFAULT_QUANTUM, DEFAULT_POLICY, RESOURCES
 from jobs import load_jobs
 
 def main():
+    if os.path.exists("disk_sim.csv"):
+        os.remove("disk_sim.csv")
     # 1. read command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("--policy", default=DEFAULT_POLICY)
@@ -17,20 +19,16 @@ def main():
     args = parser.parse_args()
 
     # 2. create your objects
-    logger           = Logger()
-    memory_manager   = MemoryManager(total_memory=TOTAL_MEMORY)
-    resource_manager = ResourceManager()
-    scheduler        = Scheduler(policy=args.policy, quantum=args.quantum)
+    logger = Logger()
+    sim = Simulation(TOTAL_MEMORY)
 
-    # 3. add shared resources from config
-    for resource in RESOURCES:
-        resource_manager.add_resource(resource)
+   
 
     # 4. load jobs from jobs.py
     jobs = load_jobs()
 
     # 5. run the simulation
-    run(scheduler, memory_manager, resource_manager, logger, jobs)
+    sim.run(jobs, logger)
 
 if __name__ == "__main__":
     main()

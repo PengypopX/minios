@@ -10,7 +10,7 @@ class State(Enum):
     TERMINATED = "TERMINATED"
 
 class PCB:
-    def __init__(self, pid, arrival_time, burst_time, memory_required, priority=0, ):
+    def __init__(self, pid, arrival_time, burst_time, memory_required, priority=0):
         # --- Identity ---
         self.pid              = pid             # Unique integer ID
         self.priority         = priority        # Used if you pick Priority scheduling
