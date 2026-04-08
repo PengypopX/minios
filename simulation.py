@@ -49,7 +49,7 @@ class Simulation:
                     if self.current_process.start_time is None:
                         self.current_process.start_time = self.system_clock
 
-            if self.current_process:
+            if self.current_process: # 4. CPU Logic, tick current process
                 result = self.scheduler.tick(self.current_process, logger,  self.system_clock)
                 if result == "preempted":
                     self.current_process =  None
@@ -64,7 +64,4 @@ class Simulation:
                     print(f"[Process {self.current_process.pid}] Requested I/O, moved to BLOCKED")
                     self.current_process = None
 
-                
-
             self.system_clock += 1
-        
