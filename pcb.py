@@ -9,22 +9,27 @@ class State(Enum):
     BLOCKED    = "BLOCKED"
     TERMINATED = "TERMINATED"
 
+#CHANGES NEEDED = MORE REALISTIC TIME (some ms)
+#BETTER USAGE OF BLOCKED STATE
+#WAIT QUEUE
+
 class PCB:
     def __init__(self, pid, arrival_time, burst_time, memory_required, priority=0):
         # --- Identity ---
         self.pid              = pid             # Unique integer ID
         self.priority         = priority        # Used if you pick Priority scheduling
 
-        # --- Time tracking ---
-        self.arrival_time     = arrival_time    # When the job enters the system
-        self.burst_time       = burst_time      # Total CPU time it needs
-        self.remaining_time   = burst_time      # Counts down as it runs (used by RR / SRTF)
-        self.start_time       = None            # Set the first time it enters RUNNING
-        self.finish_time      = None            # Set when it hits TERMINATED
+        # Parameters CPU will use during context switching (timing)
+        self.arrival_time     = arrival_time    # C
+        self.burst_time       = burst_time      # Burst time is total time integer needed for process to enter termination state
+        self.remaining_time   = burst_time
+        self.start_time       = None
+        self.finish_time      = None
 
+        self.quantum_elapsed = 0 #used in scheduler.py to track time slices used
         # --- Memory ---
-        self.memory_required  = memory_required # How many memory units it needs
-        self.memory_address   = None            # Where in memory it was allocated (set by memory manager)
+        self.memory_required  = memory_required # How much memory the program wants
+        self.memory_address   = None            # Virtual memory, CPU tracks hard coded memory!
 
         # --- State ---
         self.state            = State.NEW       # Starts as NEW, transitions from there
